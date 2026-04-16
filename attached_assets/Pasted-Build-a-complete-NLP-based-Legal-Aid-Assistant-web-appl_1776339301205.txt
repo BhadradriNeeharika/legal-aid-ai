@@ -1,0 +1,69 @@
+Build a complete NLP-based Legal Aid Assistant web application for women and marginalized communities.
+
+Tech Stack Requirements:
+- Python
+- Flask (backend API)
+- Streamlit (frontend UI)
+- Hugging Face Transformers (NLP model)
+- SQLite (database for helplines, NGOs, legal clinics)
+- gTTS (text-to-speech voice output)
+
+Functional Requirements:
+1. Chatbot Interface:
+   - User can ask legal questions in simple English
+   - Use a lightweight Hugging Face model (distilgpt2 or smaller like sshleifer/tiny-gpt2)
+   - Provide safe, simple, and understandable responses
+
+2. Rule-based Legal Knowledge:
+   - Hardcode important legal responses for:
+     - Domestic violence
+     - Sexual harassment (POSH Act)
+     - Dowry harassment
+     - Women safety laws
+   - Avoid hallucination for critical topics
+
+3. Database (SQLite):
+   - Create tables:
+     - helplines (name, phone, category)
+     - ngos (name, service, contact)
+     - legal_clinics (name, location, contact)
+   - Prepopulate with sample Indian data (181, 1091, NGOs etc.)
+
+4. API (Flask):
+   - Endpoint: /chat (POST)
+   - Takes user message and returns:
+     - chatbot response
+     - relevant helplines/NGOs
+
+5. Streamlit Frontend:
+   - Chat UI (chat bubbles style)
+   - Input box for user query
+   - Display:
+     - AI response
+     - helplines
+     - NGO suggestions
+
+6. Voice Support:
+   - Convert chatbot response to speech using gTTS
+   - Play audio in Streamlit
+
+7. Project Structure:
+   - app.py (Streamlit frontend)
+   - backend.py (Flask API)
+   - database.py (SQLite setup and queries)
+   - requirements.txt
+
+8. Constraints:
+   - Keep code simple and beginner-friendly
+   - Avoid heavy models (optimize for low memory)
+   - Must run locally and on Replit
+
+9. Extra:
+   - Add comments explaining each part
+   - Include instructions to run the project
+   - Use port 3000 for Streamlit (Replit compatible)
+
+Output:
+- Generate full working code for all files
+- Ensure everything is connected properly
+- No placeholders, provide real code

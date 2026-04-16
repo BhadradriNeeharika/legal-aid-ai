@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Legal Aid Assistant"
+version = "1.0.0"
+id = "artifacts/legal-aid-assistant"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22830
+
+[services.development]
+run = "pnpm --filter @workspace/legal-aid-assistant run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/legal-aid-assistant", "run", "build" ]
+publicDir = "artifacts/legal-aid-assistant/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22830"
+BASE_PATH = "/"

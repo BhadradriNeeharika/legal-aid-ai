@@ -3,13 +3,21 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Legal Aid Assistant API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: chat
+    description: Chatbot operations
+  - name: helplines
+    description: Helpline operations
+  - name: ngos
+    description: NGO operations
+  - name: legal-clinics
+    description: Legal clinic operations
 paths:
   /healthz:
     get:
@@ -24,6 +32,93 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /chat:
+    post:
+      operationId: sendMessage
+      tags: [chat]
+      summary: Send a chat message
+      description: Send a legal question and get a response with relevant resources
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatRequest"
+      responses:
+        "200":
+          description: Chat response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatResponse"
+
+  /chat/history:
+    get:
+      operationId: getChatHistory
+      tags: [chat]
+      summary: Get recent chat history
+      responses:
+        "200":
+          description: List of recent chat messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChatMessage"
+
+  /helplines:
+    get:
+      operationId: getHelplines
+      tags: [helplines]
+      summary: Get all helplines
+      parameters:
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of helplines
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Helpline"
+
+  /ngos:
+    get:
+      operationId: getNgos
+      tags: [ngos]
+      summary: Get all NGOs
+      responses:
+        "200":
+          description: List of NGOs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ngo"
+
+  /legal-clinics:
+    get:
+      operationId: getLegalClinics
+      tags: [legal-clinics]
+      summary: Get all legal clinics
+      responses:
+        "200":
+          description: List of legal clinics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LegalClinic"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +129,102 @@ components:
       required:
         - status
 
+    ChatRequest:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+
+    ChatResponse:
+      type: object
+      properties:
+        response:
+          type: string
+        category:
+          type: ["string", "null"]
+        helplines:
+          type: array
+          items:
+            $ref: "#/components/schemas/Helpline"
+        ngos:
+          type: array
+          items:
+            $ref: "#/components/schemas/Ngo"
+      required:
+        - response
+        - category
+        - helplines
+        - ngos
+
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: integer
+        role:
+          type: string
+        content:
+          type: string
+        category:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+      required:
+        - id
+        - role
+        - content
+        - category
+        - createdAt
+
+    Helpline:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        phone:
+          type: string
+        category:
+          type: string
+      required:
+        - id
+        - name
+        - phone
+        - category
+
+    Ngo:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        service:
+          type: string
+        contact:
+          type: string
+      required:
+        - id
+        - name
+        - service
+        - contact
+
+    LegalClinic:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        location:
+          type: string
+        contact:
+          type: string
+      required:
+        - id
+        - name
+        - location
+        - contact
